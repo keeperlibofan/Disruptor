@@ -1,16 +1,15 @@
 package quickstart;
 
-import com.lmax.disruptor.BlockingWaitStrategy;
-import com.lmax.disruptor.MultiProducerSequencer;
-import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 
 import java.nio.ByteBuffer;
 
 public class Main {
     public static void main(String[] args) {
+
         Disruptor<OrderEvent> disruptor = new Disruptor<OrderEvent>(
-                ,,,new BlockingWaitStrategy());
+                ,16,,new BlockingWaitStrategy());
 
         disruptor.handleEventsWith(new OrderEventHandler());
         //4. 消费者容器获取
@@ -25,7 +24,7 @@ public class Main {
             bb.putLong(0, i);
             producer.sendData(bb);
         }
-
-        MultiProducerSequencer
+        BatchEventProcessor<OrderEvent> eventProcessor = new BatchEventProcessor<>();
+        eventProcessor.getSequence().get();
     }
 }

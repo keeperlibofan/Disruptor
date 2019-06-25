@@ -1,5 +1,10 @@
 package quickstart;
 
+import com.lmax.disruptor.SingleProducerSequencer;
+import com.lmax.disruptor.SleepingWaitStrategy;
+import com.lmax.disruptor.TimeoutBlockingWaitStrategy;
+import com.lmax.disruptor.YieldingWaitStrategy;
+
 import java.util.concurrent.atomic.AtomicLong;
 
 public class MySequencer {
@@ -15,8 +20,11 @@ public class MySequencer {
 
     public long next() {
         long result;
+        long current;
+        long next;
         do  {
             result = putSequence.incrementAndGet();
+
         } while (putSequence.get() - offerSequence.get() > bufferSize);
         return result;
     }
