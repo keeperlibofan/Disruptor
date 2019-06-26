@@ -4,7 +4,7 @@ import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkHandler;
 
 // 消费类
-public class OrderEventHandler implements EventHandler<OrderEvent>, WorkHandler<OrderEvent> {
+public class OrderEventFirstHandler implements EventHandler<OrderEvent>, WorkHandler<OrderEvent> {
 
     @Override
     public void onEvent(OrderEvent event, long sequence, boolean endOfBatch) throws Exception {
