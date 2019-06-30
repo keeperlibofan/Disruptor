@@ -22,7 +22,30 @@ public class Main {
         EventHandlerGroup<OrderEvent> handlerGroup = disruptor.handleEventsWith(new OrderEventFirstHandler());
 
         // 同时放入多个EventHandler，多消费者模型
-        disruptor.handleEventsWith(new OrderEventFirstHandler(), new OrderEventSecondHandler());
+        // 串行操作
+        disruptor.handleEventsWith(new OrderEventFirstHandler()).handleEventsWith(new OrderEventSecondHandler());
+
+        // 并行操作
+        disruptor.handleEventsWith(new OrderEventSecondHandler());
+        disruptor.handleEventsWith(new OrderEventFirstHandler());
+
+        // 多边形操作 -- 菱形操作(一)
+        disruptor.handleEventsWith(new OrderEventFirstHandler()).handleEventsWith(new OrderEventFirstHandler(), new OrderEventSecondHandler()).handleEventsWith(new OrderEventFirstHandler());
+
+        // 菱形操作(二)
+        disruptor.after(new OrderEventFirstHandler());
+
+        // 六边形操作
+        OrderEventFirstHandler h1a = new OrderEventFirstHandler();
+        OrderEventSecondHandler h2a = new OrderEventSecondHandler();
+        OrderEventFirstHandler h1b = new OrderEventFirstHandler();
+        OrderEventSecondHandler h2b = new OrderEventSecondHandler();
+        OrderEventFirstHandler finalHandler = new OrderEventFirstHandler();
+
+        disruptor.handleEventsWith(h1a, h1b);
+        disruptor.after(h1a).handleEventsWith(h2a);
+        disruptor.after(h2a).handleEventsWith(h2b);
+        disruptor.after(h2a, h2b).handleEventsWith(finalHandler);
 
         //4. 消费者容器获取
         RingBuffer<OrderEvent> ringBuffer = disruptor.start();
@@ -48,8 +71,8 @@ public class Main {
             bb.putLong(0, i);
             producer.sendData(bb);
         }
-        BatchEventProcessor<OrderEvent> eventProcessor = new BatchEventProcessor<>();
-        eventProcessor.getSequence().get();
+        // BatchEventProcessor<OrderEvent> eventProcessor = new BatchEventProcessor<>();
+        // eventProcessor.getSequence().get();
 
     }
 }
