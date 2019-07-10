@@ -1,6 +1,7 @@
 package quickstart;
 
 import com.lmax.disruptor.RingBuffer;
+import high.muliti.OrderEvent;
 
 import java.nio.ByteBuffer;
 

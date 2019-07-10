@@ -2,6 +2,7 @@ package quickstart;
 
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkHandler;
+import high.muliti.OrderEvent;
 
 // 消费类
 public class OrderEventFirstHandler implements EventHandler<OrderEvent>, WorkHandler<OrderEvent> {

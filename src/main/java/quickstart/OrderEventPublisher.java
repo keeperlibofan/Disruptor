@@ -2,6 +2,7 @@ package quickstart;
 
 import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.dsl.Disruptor;
+import high.muliti.OrderEvent;
 
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;

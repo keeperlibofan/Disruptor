@@ -4,6 +4,7 @@ import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.EventHandlerGroup;
 import com.lmax.disruptor.dsl.ProducerType;
+import high.muliti.OrderEvent;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.CountDownLatch;
@@ -45,7 +46,7 @@ public class Main {
         disruptor.handleEventsWith(h1a, h1b);
         disruptor.after(h1a).handleEventsWith(h2a);
         disruptor.after(h2a).handleEventsWith(h2b);
-        disruptor.after(h2a, h2b).handleEventsWith(finalHandler);
+        disruptor.after(h2a, h2b).handleEventsWith(finalHandler); // 设置阻塞handler
 
         //4. 消费者容器获取
         RingBuffer<OrderEvent> ringBuffer = disruptor.start();
